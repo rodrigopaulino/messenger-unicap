@@ -1,2 +1,9 @@
 [localhost][29/05/2014 02:34:28]: teste
 [localhost][29/05/2014 02:37:07]: testando de novo
+[Rodrigo-PC 29/05/2014 12:47:05]: teste
+[Rodrigos-MacBook-Pro.local 29/05/2014 13:24:16]: teste
+[Rodrigo-PC 29/05/2014 13:25:05]: e ae beleza?
+[Rodrigo-PC 29/05/2014 13:42:48]: e ai cara, tas on?
+[Rodrigos-MacBook-Pro.local 29/05/2014 13:43:39]: To sim cara, tudo beleza?
+[Rodrigos-MacBook-Pro.local 29/05/2014 14:41:23]: e ae
+[Rodrigo-PC 29/05/2014 14:43:29]: teste

@@ -41,7 +41,7 @@ public class Constantes {
 	/**
 	 * -
 	 */
-	public static final String ADDRESS_GERENCIADOR_2 = "teste";
+	public static final String ADDRESS_GERENCIADOR_2 = "192.168.1.8";
 
 	/**
 	 * -
