@@ -109,9 +109,10 @@ public class FrontEnd extends Thread {
 					// Guarda a mensagem, o usuario de destino e depois monta a mensagem a ser gravada e exibida
 					mensagemRecebida = leitorEntrada.readLine();
 					usuarioDestino = leitorEntrada.readLine();
+					enderecoRemetente = leitorEntrada.readLine();
 					socket.close();
 
-					mensagemRecebida = "[" + ((Usuario) aUsuariosLogados.get(usuarioDestino)).getNome() + " " +
+					mensagemRecebida = "[" + ((Usuario) aUsuariosLogados.get(enderecoRemetente)).getNome() + " " +
 						new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) + "]: " +
 						mensagemRecebida;
 

@@ -8,6 +8,7 @@ package util;
 import java.awt.event.KeyEvent;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -131,7 +132,8 @@ public class Janela extends javax.swing.JFrame {
 				transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
 				transmissorDadosSaida.writeBytes(Constantes.ID_ACAO_ENVIO_MSG + '\n');
 				transmissorDadosSaida.writeBytes(aJTextField.getText() + '\n');
-				transmissorDadosSaida.writeBytes(((Usuario) aJComboBox.getSelectedItem()).getEndereco());
+				transmissorDadosSaida.writeBytes(((Usuario) aJComboBox.getSelectedItem()).getEndereco() + '\n');
+				transmissorDadosSaida.writeBytes(InetAddress.getLocalHost().getHostAddress());
 				socket.close();
 
 				// Atualiza os campos da janela
@@ -161,7 +163,8 @@ public class Janela extends javax.swing.JFrame {
 				transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
 				transmissorDadosSaida.writeBytes(Constantes.ID_ACAO_ENVIO_MSG + '\n');
 				transmissorDadosSaida.writeBytes(aJTextField.getText() + '\n');
-				transmissorDadosSaida.writeBytes(((Usuario) aJComboBox.getSelectedItem()).getEndereco());
+				transmissorDadosSaida.writeBytes(((Usuario) aJComboBox.getSelectedItem()).getEndereco() + '\n');
+				transmissorDadosSaida.writeBytes(InetAddress.getLocalHost().getHostAddress());
 				socket.close();
 
 				// Atualiza os campos da janela
