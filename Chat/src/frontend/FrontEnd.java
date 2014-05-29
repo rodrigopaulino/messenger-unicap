@@ -15,8 +15,10 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import util.Constantes;
+import util.Usuario;
 
 /**
  * Classe que implementa o servidor front end da aplicacao
@@ -53,7 +55,8 @@ public class FrontEnd extends Thread {
 			InetAddress enderecoRemetente;
 			String mensagemRecebida = "";
 			String usuarioDestino = "";
-			String acaoRequisitada;
+			String acaoRequisitada = "";
+			String nmNovoUsuarioLogado = "";
 
 			try {
 				// Espera chegada de solicitacao de acao proveniente do Cliente
@@ -64,6 +67,7 @@ public class FrontEnd extends Thread {
 				if (acaoRequisitada.equals(Constantes.ID_ACAO_LOGIN)) {
 					// Guarda o endereco do cliente para inclui-lo na tabela de usuarios logados
 					enderecoRemetente = socket.getInetAddress();
+					nmNovoUsuarioLogado = leitorEntrada.readLine();
 					socket.close();
 
 					// Faz solicitacao de acao aos gerenciadores
@@ -79,12 +83,13 @@ public class FrontEnd extends Thread {
 						socket.close();
 
 						// Inclui o usuario na tabela de usuarios logados
-						aUsuariosLogados.put(enderecoRemetente.getHostAddress(), enderecoRemetente.getHostName());
+						aUsuariosLogados.put(enderecoRemetente.getHostAddress(),
+							new Usuario(enderecoRemetente.getHostAddress(), nmNovoUsuarioLogado));
 
 						socket = new Socket(enderecoRemetente, Constantes.PORT_NUMBER_CLIENTE);
 						transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
 						transmissorDadosSaida.writeBytes(Constantes.ID_SUCESSO + '\n');
-						transmissorDadosSaida.writeBytes(aUsuariosLogados.values().toString() + '\n');
+						transmissorDadosSaida.writeBytes(this.getUsuariosLogados() + '\n');
 						transmissorDadosSaida.writeBytes((mensagemRecebida == null) ? "" : mensagemRecebida);
 						socket.close();
 					} else { // Caso haja falha na recuperacao da mensagem do log, informa falha ao cliente
@@ -99,7 +104,7 @@ public class FrontEnd extends Thread {
 					usuarioDestino = leitorEntrada.readLine();
 					socket.close();
 
-					mensagemRecebida = usuarioDestino + "[" +
+					mensagemRecebida = "[" + ((Usuario) aUsuariosLogados.get(usuarioDestino)).getNome() + " " +
 						new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) + "]: " +
 						mensagemRecebida;
 
@@ -114,7 +119,7 @@ public class FrontEnd extends Thread {
 					if (leitorEntrada.readLine().equals(Constantes.ID_SUCESSO)) {
 						socket.close();
 
-						socket = new Socket((String) aUsuariosLogados.get(usuarioDestino), Constantes.PORT_NUMBER_CLIENTE);
+						socket = new Socket(usuarioDestino, Constantes.PORT_NUMBER_CLIENTE);
 						transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
 						transmissorDadosSaida.writeBytes(Constantes.ID_MENSAGEM + '\n');
 						transmissorDadosSaida.writeBytes(mensagemRecebida);
@@ -183,6 +188,37 @@ public class FrontEnd extends Thread {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Atualiza o combo box de todos os usuarios logados sempre que ha um log in ou log out
+	 *
+	 * @param pUsuarioNovo
+	 */
+	private void atualizarUsuariosLogados(String pUsuarioNovo) {
+		Iterator it;
+
+		//it = this.aUsuariosLogados.
+	}
+
+	/**
+	 * Retorna uma String contendo os nomes de usuarios atrelados aos seus respectivos enderecos
+	 *
+	 * @return
+	 */
+	private String getUsuariosLogados() {
+		String retorno = "";
+		String conector = "";
+		Iterator it;
+		it = this.aUsuariosLogados.values().iterator();
+
+		while (it.hasNext()) {
+			Usuario usuario = (Usuario) it.next();
+			retorno = retorno + conector + usuario.getNome() + "=" + usuario.getEndereco();
+			conector = ", ";
+		}
+
+		return retorno;
 	}
 
 	/**

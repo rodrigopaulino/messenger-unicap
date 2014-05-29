@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -52,7 +53,8 @@ public class Cliente extends Thread {
 			// Solicita inclusão do cliente nos usuários cadastrados no Front End
 			socket = new Socket(Constantes.ADDRESS_FRONT_END, Constantes.PORT_NUMBER_FRONT_END);
 			transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
-			transmissorDadosSaida.writeBytes(Constantes.ID_ACAO_LOGIN);
+			transmissorDadosSaida.writeBytes(Constantes.ID_ACAO_LOGIN + '\n');
+			transmissorDadosSaida.writeBytes(InetAddress.getLocalHost().getHostName());
 			socket.close();
 
 			while (true) {

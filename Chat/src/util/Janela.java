@@ -131,11 +131,11 @@ public class Janela extends javax.swing.JFrame {
 				transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
 				transmissorDadosSaida.writeBytes(Constantes.ID_ACAO_ENVIO_MSG + '\n');
 				transmissorDadosSaida.writeBytes(aJTextField.getText() + '\n');
-				transmissorDadosSaida.writeBytes(aJComboBox.getSelectedItem().toString());
+				transmissorDadosSaida.writeBytes(((Usuario) aJComboBox.getSelectedItem()).getEndereco());
 				socket.close();
 
 				// Atualiza os campos da janela
-				aJTextArea.append('\n' + "[EU][" +
+				aJTextArea.append('\n' + "[Eu " +
 					new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) + "]: " +
 					aJTextField.getText());
 				aJTextField.setText("");
@@ -161,11 +161,11 @@ public class Janela extends javax.swing.JFrame {
 				transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
 				transmissorDadosSaida.writeBytes(Constantes.ID_ACAO_ENVIO_MSG + '\n');
 				transmissorDadosSaida.writeBytes(aJTextField.getText() + '\n');
-				transmissorDadosSaida.writeBytes(aJComboBox.getSelectedItem().toString());
+				transmissorDadosSaida.writeBytes(((Usuario) aJComboBox.getSelectedItem()).getEndereco());
 				socket.close();
 
 				// Atualiza os campos da janela
-				aJTextArea.append('\n' + "[EU][" +
+				aJTextArea.append('\n' + "[Eu " +
 					new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) + "]: " +
 					aJTextField.getText());
 				aJTextField.setText("");
@@ -194,7 +194,7 @@ public class Janela extends javax.swing.JFrame {
 		this.aJComboBox.removeAllItems();
 
 		for (int i = 0; i < usuarios.length; i++) {
-			this.aJComboBox.addItem(new String(usuarios[i]));
+			this.aJComboBox.addItem(new Usuario(usuarios[i].split("=")[1], usuarios[i].split("=")[0]));
 		}
 	}
 }
