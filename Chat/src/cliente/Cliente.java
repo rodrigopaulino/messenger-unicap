@@ -54,7 +54,8 @@ public class Cliente extends Thread {
 			socket = new Socket(Constantes.ADDRESS_FRONT_END, Constantes.PORT_NUMBER_FRONT_END);
 			transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
 			transmissorDadosSaida.writeBytes(Constantes.ID_ACAO_LOGIN + '\n');
-			transmissorDadosSaida.writeBytes(InetAddress.getLocalHost().getHostName());
+			transmissorDadosSaida.writeBytes(InetAddress.getLocalHost().getHostName() + '\n');
+			transmissorDadosSaida.writeBytes(InetAddress.getLocalHost().getHostAddress());
 			socket.close();
 
 			while (true) {

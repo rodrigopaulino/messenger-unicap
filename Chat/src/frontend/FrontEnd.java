@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -52,11 +51,11 @@ public class FrontEnd extends Thread {
 			Socket socket;
 			BufferedReader leitorEntrada;
 			DataOutputStream transmissorDadosSaida;
-			InetAddress enderecoRemetente;
+			String enderecoRemetente = "";
 			String mensagemRecebida = "";
 			String usuarioDestino = "";
 			String acaoRequisitada = "";
-			String nmNovoUsuarioLogado = "";
+			String nomeRemetente = "";
 
 			try {
 				// Espera chegada de solicitacao de acao proveniente do Cliente
@@ -66,8 +65,8 @@ public class FrontEnd extends Thread {
 
 				if (acaoRequisitada.equals(Constantes.ID_ACAO_LOGIN)) {
 					// Guarda o endereco do cliente para inclui-lo na tabela de usuarios logados
-					enderecoRemetente = socket.getInetAddress();
-					nmNovoUsuarioLogado = leitorEntrada.readLine();
+					nomeRemetente = leitorEntrada.readLine();
+					enderecoRemetente = leitorEntrada.readLine();
 					socket.close();
 
 					// Faz solicitacao de acao aos gerenciadores
@@ -83,8 +82,7 @@ public class FrontEnd extends Thread {
 						socket.close();
 
 						// Inclui o usuario na tabela de usuarios logados
-						aUsuariosLogados.put(enderecoRemetente.getHostAddress(),
-							new Usuario(enderecoRemetente.getHostAddress(), nmNovoUsuarioLogado));
+						aUsuariosLogados.put(enderecoRemetente, new Usuario(enderecoRemetente, nomeRemetente));
 
 						try {
 							// Atualiza a lista de usuarios logados de todos os conectados
