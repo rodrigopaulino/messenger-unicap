@@ -67,7 +67,6 @@ public class Cliente extends Thread {
 
 				// Verifica o Login foi bem sucedido para então atualizar a lista de usuários e carregar a última mensagem gravada no log
 				if (inMensagemFrontEnd.equals(Constantes.ID_SUCESSO)) {
-					aJanela.attUsuariosLogados(leitorEntrada.readLine());
 					aJanela.appendMessage("SD Messenger: Conectado com sucesso!");
 
 					ultimaMensagemLog = leitorEntrada.readLine();
@@ -77,6 +76,22 @@ public class Cliente extends Thread {
 					}
 				} else if (inMensagemFrontEnd.equals(Constantes.ID_MENSAGEM)) { // Caso o cliente esteja recebendo uma mensagem, exibe-a
 					aJanela.appendMessage(leitorEntrada.readLine());
+				} else if (inMensagemFrontEnd.equals(Constantes.ID_ACAO_ATUALIZAR_USUARIOS)) {
+					// Caso haja atualizacao na lista de usuarios logados
+					String usuariosLogados = leitorEntrada.readLine();
+					String[] usuarios = usuariosLogados.split(", ");
+					String conector = "";
+
+					usuariosLogados = "";
+
+					for (int i = 0; i < usuarios.length; i++) {
+						if (!usuarios[i].equals("") &&
+								!usuarios[i].split("=")[1].equals(InetAddress.getLocalHost().getHostAddress())) {
+							usuariosLogados = usuariosLogados + conector + usuarios[i];
+							conector = ", ";
+						}
+					}
+					aJanela.attUsuariosLogados(usuariosLogados);
 				} else {
 					aJanela.appendMessage("SD Messenger: Nao foi possivel se conectar ao servidor! Tente novamente mais tarde.");
 				}

@@ -86,10 +86,19 @@ public class FrontEnd extends Thread {
 						aUsuariosLogados.put(enderecoRemetente.getHostAddress(),
 							new Usuario(enderecoRemetente.getHostAddress(), nmNovoUsuarioLogado));
 
+						try {
+							// Atualiza a lista de usuarios logados de todos os conectados
+							this.atualizarUsuariosLogados();
+						} catch (IOException e) {
+							socket = new Socket(enderecoRemetente, Constantes.PORT_NUMBER_CLIENTE);
+							transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
+							transmissorDadosSaida.writeBytes(Constantes.ID_FALHA);
+							socket.close();
+						}
+
 						socket = new Socket(enderecoRemetente, Constantes.PORT_NUMBER_CLIENTE);
 						transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
 						transmissorDadosSaida.writeBytes(Constantes.ID_SUCESSO + '\n');
-						transmissorDadosSaida.writeBytes(this.getUsuariosLogados() + '\n');
 						transmissorDadosSaida.writeBytes((mensagemRecebida == null) ? "" : mensagemRecebida);
 						socket.close();
 					} else { // Caso haja falha na recuperacao da mensagem do log, informa falha ao cliente
@@ -193,12 +202,24 @@ public class FrontEnd extends Thread {
 	/**
 	 * Atualiza o combo box de todos os usuarios logados sempre que ha um log in ou log out
 	 *
-	 * @param pUsuarioNovo
+	 * @throws IOException
 	 */
-	private void atualizarUsuariosLogados(String pUsuarioNovo) {
+	private void atualizarUsuariosLogados() throws IOException {
 		Iterator it;
+		String usuariosLogados = this.getUsuariosLogados();
 
-		//it = this.aUsuariosLogados.
+		it = this.aUsuariosLogados.values().iterator();
+
+		while (it.hasNext()) {
+			Usuario usuario = (Usuario) it.next();
+
+			// Cria um socket para enviar a nova lista de usuarios logados para todos os usuarios logados
+			Socket socket = new Socket(usuario.getEndereco(), Constantes.PORT_NUMBER_CLIENTE);
+			DataOutputStream transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
+			transmissorDadosSaida.writeBytes(Constantes.ID_ACAO_ATUALIZAR_USUARIOS + '\n');
+			transmissorDadosSaida.writeBytes(usuariosLogados);
+			socket.close();
+		}
 	}
 
 	/**

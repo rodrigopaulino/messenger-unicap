@@ -56,6 +56,11 @@ public class Constantes {
 	/**
 	 * -
 	 */
+	public static final String ID_ACAO_ATUALIZAR_USUARIOS = "att";
+
+	/**
+	 * -
+	 */
 	public static final String ID_ACAO_SALVAR_LOG = "salvar";
 
 	/**

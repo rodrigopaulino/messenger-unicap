@@ -194,7 +194,9 @@ public class Janela extends javax.swing.JFrame {
 		this.aJComboBox.removeAllItems();
 
 		for (int i = 0; i < usuarios.length; i++) {
-			this.aJComboBox.addItem(new Usuario(usuarios[i].split("=")[1], usuarios[i].split("=")[0]));
+			if (!usuarios[i].equals("")) {
+				this.aJComboBox.addItem(new Usuario(usuarios[i].split("=")[1], usuarios[i].split("=")[0]));
+			}
 		}
 	}
 }
