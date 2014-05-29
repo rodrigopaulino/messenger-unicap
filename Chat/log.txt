@@ -1,0 +1,2 @@
+[localhost][29/05/2014 02:34:28]: teste
+[localhost][29/05/2014 02:37:07]: testando de novo
