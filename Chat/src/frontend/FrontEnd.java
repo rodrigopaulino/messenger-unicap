@@ -132,7 +132,23 @@ public class FrontEnd extends Thread {
 						transmissorDadosSaida.writeBytes(Constantes.ID_MENSAGEM + '\n');
 						transmissorDadosSaida.writeBytes(mensagemRecebida);
 						socket.close();
+
+						// Exclui o usuario da tabela de usuarios logados
+						aUsuariosLogados.remove(enderecoRemetente);
+
+						try {
+							// Atualiza a lista de usuarios logados de todos os conectados
+							this.atualizarUsuariosLogados();
+						} catch (IOException e) {
+							socket = new Socket(enderecoRemetente, Constantes.PORT_NUMBER_CLIENTE);
+							transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
+							transmissorDadosSaida.writeBytes(Constantes.ID_FALHA);
+							socket.close();
+						}
 					}
+				} else if (acaoRequisitada.equals(Constantes.ID_ACAO_ENVIO_MSG)) {
+					enderecoRemetente = leitorEntrada.readLine();
+					socket.close();
 				}
 			} catch (IOException e) {
 				System.out.println("Nao e possivel se comunicar com o Gerenciador de Replica!");

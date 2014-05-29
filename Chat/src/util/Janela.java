@@ -6,6 +6,7 @@
 package util;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -70,6 +71,11 @@ public class Janela extends javax.swing.JFrame {
 		aJTextField.addKeyListener(new java.awt.event.KeyAdapter() {
 				public void keyPressed(java.awt.event.KeyEvent evt) {
 					jTextFieldKeyPressed(evt);
+				}
+			});
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+				public void windowClosing(java.awt.event.WindowEvent evt) {
+					close(evt);
 				}
 			});
 
@@ -172,6 +178,31 @@ public class Janela extends javax.swing.JFrame {
 					new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) + "]: " +
 					aJTextField.getText());
 				aJTextField.setText("");
+			}
+		} catch (IOException e) {
+			appendMessage("SD Messenger: O servidor parece nao estar mais funcionando! Volte a entrar no Chat outra hora.");
+		}
+	}
+
+	/**
+	 * - Metodo executado ao fechar a janela do chat
+	 *
+	 * @param evt
+	 */
+	private void close(java.awt.event.WindowEvent evt) {
+		Socket socket;
+		DataOutputStream transmissorDadosSaida;
+
+		try {
+			if ((evt.getID() == WindowEvent.WINDOW_CLOSING)) {
+				// Cria um socket e solicita logout
+				socket = new Socket(Constantes.ADDRESS_FRONT_END, Constantes.PORT_NUMBER_FRONT_END);
+				transmissorDadosSaida = new DataOutputStream(socket.getOutputStream());
+				transmissorDadosSaida.writeBytes(Constantes.ID_ACAO_LOGOUT + '\n');
+				transmissorDadosSaida.writeBytes(InetAddress.getLocalHost().getHostAddress());
+				socket.close();
+
+				this.dispose();
 			}
 		} catch (IOException e) {
 			appendMessage("SD Messenger: O servidor parece nao estar mais funcionando! Volte a entrar no Chat outra hora.");
