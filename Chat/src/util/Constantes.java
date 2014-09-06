@@ -31,7 +31,7 @@ public class Constantes {
 	/**
 	 * -
 	 */
-	public static final String ADDRESS_FRONT_END = "localhost";
+	public static final String ADDRESS_FRONT_END = "172.17.19.157";
 
 	/**
 	 * -
@@ -41,7 +41,7 @@ public class Constantes {
 	/**
 	 * -
 	 */
-	public static final String ADDRESS_GERENCIADOR_2 = "192.168.1.8";
+	public static final String ADDRESS_GERENCIADOR_2 = "172.17.19.124";
 
 	/**
 	 * -
