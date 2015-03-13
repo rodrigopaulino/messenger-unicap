@@ -1,0 +1,1 @@
+Um serviço de mensagem instantânea para a disciplina de Sistemas Distribuídos da UNICAP.
